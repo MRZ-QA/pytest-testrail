@@ -67,6 +67,9 @@ Or if you want to add defects to testcase result:
 
     [TESTCASE]
     custom_comment = 'This is a custom comment'
+    
+    [CUSTOM]
+    build = 'build.934_CN'
 ```
 
 Or
