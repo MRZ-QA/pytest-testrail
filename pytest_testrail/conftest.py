@@ -132,6 +132,8 @@ def pytest_configure(config):
                            config_manager.getoption('tr-password', 'password', 'API'),
                            timeout=config_manager.getoption('tr-timeout', 'timeout', 'API'))
 
+        custom_fields =config_manager.get_custom()
+
         config.pluginmanager.register(
             PyTestRailPlugin(
                 client=client,
@@ -151,7 +153,8 @@ def pytest_configure(config):
                 publish_blocked=config.getoption('--tr-dont-publish-blocked'),
                 skip_missing=config.getoption('--tr-skip-missing'),
                 milestone_id=config_manager.getoption('tr-milestone-id', 'milestone_id', 'TESTRUN'),
-                custom_comment=config_manager.getoption('tc-custom-comment', 'custom_comment', 'TESTCASE')
+                custom_comment=config_manager.getoption('tc-custom-comment', 'custom_comment', 'TESTCASE'),
+                custom_fields=custom_fields
             ),
             # Name of plugin instance (allow to be used by other plugins)
             name="pytest-testrail-instance"
@@ -194,3 +197,9 @@ class ConfigManager(object):
         else:
             # 4. if entry not found in config file
             return default
+            
+    def get_custom(self):
+        if 'CUSTOM' in self.cfg_file.sections():
+            return self.cfg_file['CUSTOM']
+        else:
+            return None
